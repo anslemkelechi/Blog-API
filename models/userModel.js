@@ -37,7 +37,12 @@ const userSchema = new mongoose.Schema({
     },
     resetPasswordToken: String,
     resetTokenExpires: Date,
-})
+},
+{
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+)
 
 
 userSchema.pre('save', async function (next) {
