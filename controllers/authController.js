@@ -4,7 +4,8 @@ const appError = require('./../utils/appError');
 const User = require('./../models/userModel');
 const sendEmail = require('./../utils/email');
 const crypto = require('crypto');
-
+const { promisify } = require('util');
+const app = require('../app');
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.jwt_secret, {
     expiresIn: process.env.jwt_expires,
@@ -109,7 +110,7 @@ exports.resetPassword = catchAsy(async (req, res, next) => {
     resetPasswordToken: hashedToken,
     resetTokenExpires: { $gt: Date.now() },
   });
-  //2. Check if token matches & still valid
+  //2. Check IF token matches & still valid
   if (!user)
     return next(
       new appError(
@@ -117,7 +118,7 @@ exports.resetPassword = catchAsy(async (req, res, next) => {
         'Token Invalid or Expired, Try to reset password again!'
       )
     );
-  //3. If Token is valid
+  //3. IF Token is valid
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
   user.resetPasswordToken = undefined;
@@ -125,4 +126,19 @@ exports.resetPassword = catchAsy(async (req, res, next) => {
   await user.save();
   //4. Login User
   createToken(user, 200, res);
+});
+
+exports.protectRoute = catchAsy(async (req, res, next) => {
+  const token = req.cookies.jwt;
+  if (!token) return next(new appError(400, 'Please Login Again!'));
+
+  const decoded = await promisify(jwt.verify)(token, process.env.jwt_secret);
+  //Check if user exists
+  const currentUser = await User.findById(decoded.id);
+  //if (decoded.expiresIn > Date.now() + jwt_cookie_expires * 60 * 60 * 1000)
+    if (!currentUser)
+      return next(new appError(404, 'Session expired, Login again!'));
+  //Add user to req object
+  req.user = currentUser;
+  next();
 });

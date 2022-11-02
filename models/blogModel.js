@@ -20,7 +20,7 @@ const blogSchema = new mongoose.Schema(
     },
     author: {
       type: mongoose.Schema.ObjectId,
-      ref: User,
+      ref: 'User',
     },
     state: {
       type: String,
@@ -38,19 +38,22 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Your blog must have a body!'],
     },
-    timestamp: true,
   },
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
 );
-
+blogSchema.set('timestamps', true);
 blogSchema.pre('save', function (next) {
   this.populate({
     path: 'author',
     select: '-__v -resetPasswordToken -resetTokenExpires -password -email',
   });
+  next();
+});
+blogSchema.pre('save', function (next) {
+  this.slug = slugify(this.title, { lower: true });
   next();
 });
 blogSchema.pre('/^find/', function (next) {
