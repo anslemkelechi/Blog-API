@@ -29,6 +29,7 @@ const blogSchema = new mongoose.Schema(
     },
     read_count: {
       type: Number,
+      default: 0,
     },
     reading_time: {
       type: String,
@@ -45,7 +46,7 @@ const blogSchema = new mongoose.Schema(
   }
 );
 blogSchema.set('timestamps', true);
-blogSchema.pre('save', function (next) {
+blogSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'author',
     select: '-__v -resetPasswordToken -resetTokenExpires -password -email',
