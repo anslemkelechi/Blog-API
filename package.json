@@ -2,7 +2,6 @@
   "name": "blogging-api",
   "version": "1.0.0",
   "description": "'Blogging API'",
-  "main": "index.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
