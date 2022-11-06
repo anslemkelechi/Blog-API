@@ -13,8 +13,34 @@ const hpp = require('hpp');
 const cors = require('cors');
 
 //GLOBAL MIDDLEWARES
+//Allow cross-origin access
+app.use(cors());
 
+//Set security HTTP headers
+app.use(helmet());
 
+const limiter = rateLimit({
+  max: 500,
+  windowMs: 24 * 60 * 60 * 1000,
+  standardHeaders: true,
+  message: 'Too Many Request From this IP, please try again in an hour',
+});
+
+//Set API Limit
+app.use('/api', limiter);
+
+//Data Sanitization against NOSQL query Injection
+app.use(mongoSanitize());
+
+//Data Sanitization against XSS
+app.use(xss());
+
+//Allow views
+app.use(express.static(`${__dirname}/views`));
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
