@@ -59,4 +59,5 @@ module.exports = (err, req, res, next) => {
       error = handleJWTExpiredError(error);
     errorProd(err, res);
   }
+  return next();
 };
