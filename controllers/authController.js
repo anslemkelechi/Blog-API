@@ -136,8 +136,8 @@ exports.protectRoute = catchAsy(async (req, res, next) => {
   //Check if user exists
   const currentUser = await User.findById(decoded.id);
   //if (decoded.expiresIn > Date.now() + jwt_cookie_expires * 60 * 60 * 1000)
-    if (!currentUser)
-      return next(new appError(404, 'Session expired, Login again!'));
+  if (!currentUser)
+    return next(new appError(404, 'Session expired, Login again!'));
   //Add user to req object
   req.user = currentUser;
   next();

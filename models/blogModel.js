@@ -34,7 +34,10 @@ const blogSchema = new mongoose.Schema(
     reading_time: {
       type: String,
     },
-    tags: [String],
+    tags: {
+      type: [String],
+      lowercase: true,
+    },
     body: {
       type: String,
       required: [true, 'Your blog must have a body!'],
@@ -57,11 +60,10 @@ blogSchema.pre('save', function (next) {
   this.slug = slugify(this.title, { lower: true });
   next();
 });
-blogSchema.pre('/^find/', function (next) {
+blogSchema.methods.updateRead = async function () {
   this.read_count = this.read_count + 1;
-  next();
-});
-
+  return this.read_count;
+};
 const Blog = mongoose.model('Blog', blogSchema);
 
 module.exports = Blog;
