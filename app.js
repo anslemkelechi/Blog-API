@@ -43,7 +43,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use('/api/v1/users', UserRouter);
 app.use('/api/v1/articles', blogRouter);
