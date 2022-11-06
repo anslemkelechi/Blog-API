@@ -167,7 +167,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
   "message": "Login successful",
   "data": {
     "userId": "6366f7b0aa0dd83e768f7d3b",
-    "email": "korku@mail.com",
+    "email": "example@mail.com",
     "token": "eyJhbGciOiJIUzI1NiIs"
   }
 }
@@ -187,7 +187,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 
 ### Forget Password
 
-- Route: /api/user/forgetpassword
+- Route: /api/user/forgetPassword
 - Method: POST
 - Body:
 
@@ -220,15 +220,16 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 
 ---
 
-### Forget Password
+### Reset Password
 
-- Route: /api/user/forgetpassword
+- Route: /api/user/resetpassword
 - Method: POST
 - Body:
 
 ```
 {
-  "email": "example@mail.com",
+  "password":"newpassword",
+  "passwordConfirm":"newpassword"
 }
 ```
 
@@ -239,7 +240,12 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 ```
 {
   "status": "success",
-  "message": "Please check your mail for reset link",
+  "message": "Login successful",
+  "data": {
+    "userId": "6366f7b0aa0dd83e768f7d3b",
+    "email": "example@mail.com",
+    "token": "eyJhbGciOiJIUzI1NiIs"
+  }
 }
 ```
 
@@ -260,7 +266,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 - Route: /api/blog/userId
 - Method: POST
 - Header
-  - Authorization: Bearer {token}
+  -Cookie: {token}
 - Body:
 
 ```
@@ -295,7 +301,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
       "_id": "3245343",
       "createdAt": "2022-11-06T00:05:38.728Z",
       "updatedAt": "2022-11-06T00:05:38.728Z"
-      "reading_time": "1"
+      "reading_time": "1min 2secs"
     }
   }
 }
@@ -318,7 +324,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 - Route: /api/blog/update/blogId
 - Method: PATCH
 - Header
-  - Authorization: Bearer {token}
+  -Cookie: {token}
 - Body
 
 ```
@@ -335,7 +341,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 {
     state: "success",
     data: {
-        "update": {
+        "blog": {
       "_id": "someId",
       "title": "title",
       "tags": [tags],
@@ -371,7 +377,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 - Route: /api/blog/update/blogId
 - Method: PATCH
 - Header
-  - Authorization: Bearer {token}
+  -Cookie: {token}
 - Body
 
 ```
@@ -390,7 +396,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 {
     state: "success",
     data: {
-        "update": {
+        "blog": {
       "_id": "someId",
       "title": "new title",
       "tags": [ new tags],
@@ -425,7 +431,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 - Method: DELETE
 - Header:
 
-  - Authorization: Bearer {token}
+  -Cookie: {token}
 
 - Responses
   - Success
@@ -433,7 +439,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 ```
 {
     status: 'success',
-    message: 'Blog deleted'
+    message: null
 }
 ```
 
@@ -455,7 +461,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 
   - page (default: 1)
   - per_page (default: 20)
-  - state(default: 'published')
+  - state(only: 'published')
   - created_at
   - author
   - title
@@ -510,7 +516,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
       "read_count": 0,
       "createdAt": "2022-11-05T23:56:33.095Z",
       "updatedAt": "2022-11-06T17:03:04.565Z",
-      "reading_time": "1"
+      "reading_time": "1min 2 secs"
     }
 }
 ```
@@ -527,7 +533,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 
 ### Get owner blogs
 
-- Route: /api/blog/userId
+- Route: /api/blog/myblogs
 - Method: GET
 - Query params:
 
