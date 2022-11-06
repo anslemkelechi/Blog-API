@@ -7,6 +7,9 @@ const slugify = require('slugify');
 exports.createBlog = catchAsy(async (req, res, next) => {
   req.body.author = req.user._id;
   const blog = await Blog.create(req.body);
+  const readTime = await blog.calcReadTime();
+  blog.reading_time = `${readTime[0]} min ${readTime[1]} seconds`;
+  await blog.save({ validateBeforeSave: false });
 
   res.status(200).json({
     status: 'Success',
@@ -39,6 +42,12 @@ exports.getAllBlogs = catchAsy(async (req, res, next) => {
   if (req.query.tag) {
     const tag = req.query.tag.split(',');
     query = Blog.find({ tags: tag });
+  }
+
+  //Build Query For sort
+  if (req.query.sort) {
+    const sort = req.query.sort || 'createdAt';
+    query = query.sort(sort);
   }
   //.Add Pagination
   const page = req.query.page * 1 || 1;

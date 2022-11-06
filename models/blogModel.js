@@ -33,6 +33,7 @@ const blogSchema = new mongoose.Schema(
     },
     reading_time: {
       type: String,
+      default: 0,
     },
     tags: {
       type: [String],
@@ -63,6 +64,14 @@ blogSchema.pre('save', function (next) {
 blogSchema.methods.updateRead = async function () {
   this.read_count = this.read_count + 1;
   return this.read_count;
+};
+blogSchema.methods.calcReadTime = async function () {
+  let words = this.title.length + this.body.length;
+  let time = words / 200;
+  const fullTime = time.toString().split('.');
+  const min = fullTime[0];
+  const sec = Math.round((fullTime[1] * 60) / 1000);
+  return [min, sec];
 };
 const Blog = mongoose.model('Blog', blogSchema);
 
