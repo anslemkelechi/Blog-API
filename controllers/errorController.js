@@ -47,10 +47,9 @@ module.exports = (err, req, res, next) => {
   if (process.env.NODE_ENV == 'Development') {
     console.log(err);
     errorDev(err, res);
-  } else if (process.env.NODE_ENV == 'production' && err.status == 'failed') {
-    errorProd(err, res);
   } else if (process.env.NODE_ENV == 'production') {
     let error = { ...err };
+    error.message = err.message;
     if (error.name === 'CastError') error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDuplicateKeyDB(error);
     if (error._message === 'Validation failed')
