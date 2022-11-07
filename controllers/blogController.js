@@ -30,10 +30,16 @@ exports.getAllBlogs = catchAsy(async (req, res, next) => {
     query = Blog.find(req.query);
   }
 
+  console.log(req.query);
   //Build query for author
-  if (req.params.author) {
-    const author = req.params.author;
+  if (req.query.author) {
+    const author = req.query.author;
+    console.log(author);
     const user = await User.findOne({ username: author });
+    if (!user)
+      return next(
+        new appError(403, 'Author does not exists or has written no articles')
+      );
     const ID = user.id;
     query = Blog.find({ author: ID });
   }
@@ -55,14 +61,21 @@ exports.getAllBlogs = catchAsy(async (req, res, next) => {
   const skip = (page - 1) * limit;
   query = query.skip(skip).limit(limit);
 
-  //Await Query.
+  //Await Query, and filter drafts out.
   const blog = await query;
+  let newblog = [];
   if (blog.length == 0) return next(new appError(403, 'No Blog Found'));
+  blog.forEach((el) => {
+    if (el.state == 'published') {
+      newblog.push(el);
+    }
+  });
 
   res.status(200).json({
     status: 'success',
+    result: newblog.length,
     data: {
-      blog,
+      newblog,
     },
   });
 });

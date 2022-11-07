@@ -99,7 +99,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 
 ### Signup User
 
-- Route: /api/user/signup
+- Route: /api/v1/users/signup
 - Method: POST
 - Body:
 
@@ -146,7 +146,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 
 ### Login User
 
-- Route: /api/user/login
+- Route: /api/v1/users/login
 - Method: POST
 - Body:
 
@@ -187,7 +187,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 
 ### Forget Password
 
-- Route: /api/user/forgetPassword
+- Route: /api/v1/users/forgetPassword
 - Method: POST
 - Body:
 
@@ -222,7 +222,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 
 ### Reset Password
 
-- Route: /api/user/resetpassword
+- Route: /api/v1/users/resetpassword/{resettoken}
 - Method: POST
 - Body:
 
@@ -263,7 +263,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 
 ### Create blog (logged in user)
 
-- Route: /api/blog/userId
+- Route: /api/v1/articles/
 - Method: POST
 - Header
   -Cookie: {token}
@@ -321,7 +321,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 
 ### Update Blog State (logged in owner)
 
-- Route: /api/blog/update/blogId
+- Route: /api/v1/articles/update/blogId
 - Method: PATCH
 - Header
   -Cookie: {token}
@@ -374,7 +374,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 
 ### Update Blog content (logged in owner)
 
-- Route: /api/blog/update/blogId
+- Route: /api/v1/articles/update/blogId
 - Method: PATCH
 - Header
   -Cookie: {token}
@@ -427,7 +427,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 
 ### Delete user blog post (logged in owner)
 
-- Route: /api/blog/delete/blogId
+- Route: /api/v1/articles/delete/blogId
 - Method: DELETE
 - Header:
 
@@ -455,17 +455,17 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 
 ### Get Published Blogs (all users - logged in or out)
 
-- Route: /api/blog/
+- Route: /api/v1/articles/
 - Method: GET
 - Query params:
 
-  - page (default: 1)
-  - per_page (default: 20)
-  - state(only: 'published')
-  - created_at
-  - author
-  - title
-  - tags
+  - page (default: 1) = /api/v1/articles?page=1&limit=20
+  - per_page (default: 20) = /api/v1/articles?page=1&limit=20
+  - state(only: 'published') = /api/v1/articles?state=published
+  - created_at = /api/v1/articles?sort=createdAt
+  - author = /api/v1/articles/{author-name}
+  - title = /api/v1/articles?title={title-name}
+  - tags = /api/v1/articles?tags=javascript,css
 
 - Responses
   - Success
@@ -492,7 +492,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 
 ### Get A Published Blog (all users - logged in or out)
 
-- Route: /api/blog/blogId
+- Route: /api/v1/articles/blogId
 - Method: GET
 
 - Responses
@@ -533,16 +533,16 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 
 ### Get owner blogs
 
-- Route: /api/blog/myblogs
+- Route: /api/v1/articles/myblogs
 - Method: GET
 - Query params:
 
-  - page (default: 1)
-  - per_page (default: 20)
-  - state(default: 'published')
-  - created_at
-  - title
-  - tags
+  - page (default: 1) = /api/v1/articles/myblogs?page=1&limit=20
+  - per_page (default: 20) = /api/v1/articles/myblogs?page=1&limit=20
+  - state(only: 'published') = /api/v1/articles/myblogs?state=published
+  - created_at = /api/v1/articles/myblogs?sort=createdAt
+  - title = /api/v1/articles/myblogs?title={title-name}
+  - tags = /api/v1/articles/myblogs?tags=javascript,css
 
 - Responses
 

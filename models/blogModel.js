@@ -37,7 +37,6 @@ const blogSchema = new mongoose.Schema(
     },
     tags: {
       type: [String],
-      lowercase: true,
     },
     body: {
       type: String,
@@ -59,6 +58,9 @@ blogSchema.pre(/^find/, function (next) {
 });
 blogSchema.pre('save', function (next) {
   this.slug = slugify(this.title, { lower: true });
+  this.tags.forEach((el) => {
+    el.toLowerCase();
+  });
   next();
 });
 blogSchema.methods.updateRead = async function () {

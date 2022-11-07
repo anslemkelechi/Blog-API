@@ -7,12 +7,10 @@ const userSchema = new mongoose.Schema(
   {
     firstname: {
       type: String,
-      lowercase: true,
       required: [true, 'Please provide firstname'],
     },
     lastname: {
       type: String,
-      lowercase: true,
       required: [true, 'Please provide lastname'],
     },
     email: {
@@ -23,7 +21,6 @@ const userSchema = new mongoose.Schema(
     },
     username: {
       type: String,
-      lowercase: true,
       unique: true,
     },
     password: {
@@ -52,6 +49,7 @@ userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   this.password = await bcrypt.hash(this.password, 12);
   this.passwordConfirm = undefined;
+  this.username = this.username.toLowerCase();
   next();
 });
 userSchema.methods.createResetToken = function () {

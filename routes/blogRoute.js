@@ -6,11 +6,14 @@ const router = express.Router();
 router
   .route('/myblogs')
   .get(authController.protectRoute, blogController.myBlog);
+
 router
-  .route('/:author?')
+  .route('/')
   .post(authController.protectRoute, blogController.createBlog)
   .get(blogController.getAllBlogs);
+
 router.route('/:id').get(blogController.getBlog);
+
 router
   .route('/update/:id')
   .patch(authController.protectRoute, blogController.updateBlog);
