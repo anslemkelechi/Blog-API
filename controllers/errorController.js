@@ -6,7 +6,6 @@ const handleCastErrorDB = (err) => {
 };
 const handleDuplicateKeyDB = (err) => {
   const value = err.keyValue.email;
-  console.log(value);
   const message = `Duplicate field value: '${value}' Please use another value`;
   return new appError(400, message);
 };
@@ -48,8 +47,9 @@ module.exports = (err, req, res, next) => {
   if (process.env.NODE_ENV == 'Development') {
     console.log(err);
     errorDev(err, res);
+  } else if (process.env.NODE_ENV == 'production' && err.status == 'failed') {
+    errorProd(err, res);
   } else if (process.env.NODE_ENV == 'production') {
-    console.log(err);
     let error = { ...err };
     if (error.name === 'CastError') error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDuplicateKeyDB(error);
@@ -59,5 +59,6 @@ module.exports = (err, req, res, next) => {
     if (error.name === 'TokenExpiredError')
       error = handleJWTExpiredError(error);
     errorProd(error, res);
+    console.log(err);
   }
 };

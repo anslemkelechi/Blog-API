@@ -54,7 +54,8 @@ exports.login = catchAsy(async (req, res, next) => {
 
   //If Any Field Is Incorrect
   if (!user || !(await user.comparePassword(password, user.password))) {
-    return next(new appError(401, 'Email or Password Incorrect'));
+    const message = 'Email or Password Incorrect';
+    return next(new appError(401, message));
   }
 
   //If everything checks out, send JWT Token.

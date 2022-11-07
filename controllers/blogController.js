@@ -30,11 +30,9 @@ exports.getAllBlogs = catchAsy(async (req, res, next) => {
     query = Blog.find(req.query);
   }
 
-  console.log(req.query);
   //Build query for author
   if (req.query.author) {
     const author = req.query.author;
-    console.log(author);
     const user = await User.findOne({ username: author });
     if (!user)
       return next(
