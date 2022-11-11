@@ -54,7 +54,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 
 - Install NodeJS, mongodb
 - pull this repo
-- update env
+- update config.env
 - run `npm run dev`
 
 ---
@@ -91,7 +91,6 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 | state        | string    | required, default: 'draft', enum: ['draft', 'published'] |
 | read_count   | number    | required, default: 0                                     |
 | reading_time | string    | required                                                 |
-| created_on   | date      | required                                                 |
 
 ## APIs
 
@@ -224,6 +223,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
 
 - Route: /api/v1/users/resetpassword/{resettoken}
 - Method: POST
+--Note: To test email reset functionality, we use mailtrap.io, which handles email testing functionality, Create an account on mailtrap & grab API keys and add to config.env file.
 - Body:
 
 ```
@@ -295,7 +295,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
       "tags": [
 
       ],
-      "author": { first_name: 'jon', last_name: 'doe', email: 'jon@mail.com, },
+      "author": { first_name: 'jon', last_name: 'doe' },
       "state": "draft",
       "read_count": 0,
       "_id": "3245343",
@@ -463,8 +463,8 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
   - per_page (default: 20) = /api/v1/articles?page=1&limit=20
   - state(only: 'published') = /api/v1/articles?state=published
   - created_at = /api/v1/articles?sort=createdAt
-  - author = /api/v1/articles/{author-name}
-  - title = /api/v1/articles?title={title-name}
+  - author = /api/v1/articles/author-name
+  - title = /api/v1/articles?title=title-name
   - tags = /api/v1/articles?tags=javascript,css
 
 - Responses
@@ -541,7 +541,7 @@ This is an api for a blog. Altschool Africa Nodejs second semester project
   - per_page (default: 20) = /api/v1/articles/myblogs?page=1&limit=20
   - state(only: 'published') = /api/v1/articles/myblogs?state=published
   - created_at = /api/v1/articles/myblogs?sort=createdAt
-  - title = /api/v1/articles/myblogs?title={title-name}
+  - title = /api/v1/articles/myblogs?title=title-name
   - tags = /api/v1/articles/myblogs?tags=javascript,css
 
 - Responses
